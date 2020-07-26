@@ -1,0 +1,19 @@
+@font-face{
+    font-family: homeHeadings;
+    src: url('/font/homeHeadings.ttf');
+}
+
+.home .headings {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    flex-flow: column;
+    align-items: center;
+    font-family: homeHeadings;
+    background-color: #000;
+    transition: background-color 1.5s;
+}
+
+.home .headings h1{
+    transition: color 0.5s;
+}
