@@ -8,7 +8,9 @@
     flex-flow: column;
     align-items: center;
     width: 100%;
-    background-color: #54fdfd;
+    min-height: 100vh;
+    transition: background-color 1.5s;
+    /* background-color: #54fdfd; */
 }
 
 .room .heading {
@@ -38,6 +40,10 @@
     border-radius: 2em;
 }
 
+.room .appliance-card:hover, .room .appliance-card:focus, .room .appliance-card:active{
+    transform: scale(1.10);
+    transition-duration: 0.5s;
+}
 .room .appliance-card .appliance-image img {
     height: 9em;
     width: 9em;
@@ -49,4 +55,11 @@
 }
 .room .appliance-card p {
     text-align: center;
+}
+
+.room .login-form {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
 }

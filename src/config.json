@@ -7,5 +7,6 @@
         "storageBucket": "homeweb-torusmug.appspot.com",
         "messagingSenderId": "810549788359",
         "appId": "1:810549788359:web:99910c400832ff73f9c8e2"
-    }
+    },
+    "serverEndpoint" : ""
 }
