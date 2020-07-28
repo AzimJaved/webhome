@@ -5,6 +5,7 @@ import Button from './components/Button/Button'
 import Textbox from './components/Textbox/Textbox'
 import { serverEndpoint } from '../config.json'
 // appliances = {"tl-01": {"name":"Tubelight", "image": "/", "pin":1, "lastStatus":"ON", "lastStatusTime":"UTC Time","type": "light"}}
+
 function Room() {
     let [user, setUser] = useState({ authenticated: true, token: null })
     let [appliances, setAppliances] = useState(null)
@@ -48,21 +49,26 @@ function Room() {
     }
 
     function applianceToggle(event, id) {
+        let action = ''
         if (appliances[id].lastAction === 'ON') {
-            setLastAction('OFF')
-        } else if (appliances[id].lastAction === 'OFF'){
-            setLastAction('ON')
+            action = 'OFF'
+        } else if (appliances[id].lastAction === 'OFF') {
+            action = 'ON'
         }
         fetch(serverEndpoint + '/applianceToggle', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(appliances[id])
+            body: JSON.stringify({ payload: { appliance: appliances[id], action: action }, token: user.token })
         })
             .then(response => response.json())
             .then(data => {
-                fetchAppliances()
+                if (data.status === 'SUCCESS') {
+                    fetchAppliances()
+                    setLastAction(action)
+                }
+
             })
     }
     return (
