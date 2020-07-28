@@ -25,7 +25,7 @@ function Home() {
                 <div id="room" onTouchStart={(event) => { handleMouseEnter(event) }} onTouchEnd={(event) => { handleMouseLeave(event) }} onMouseEnter={(event) => { handleMouseEnter(event) }} onMouseLeave={(event) => { handleMouseLeave(event) }}
                     style={highlighted === null ? { color: '#54fdfd' } : highlighted === 'room' ? { color: '#000' } : { color: colors[headingEnum[highlighted]] }}>
                     <h1>
-                        <a href={'http://room.azims.space'}>Room</a>
+                        <a href={'/room'}>Room</a>
                     </h1>
                 </div>
                 <div id="resume" onTouchStart={(event) => { handleMouseEnter(event) }} onTouchEnd={(event) => { handleMouseLeave(event) }} onMouseEnter={(event) => { handleMouseEnter(event) }} onMouseLeave={(event) => { handleMouseLeave(event) }}
