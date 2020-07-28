@@ -4,22 +4,24 @@ import light from './images/appliances/light.jpg'
 import Button from './components/Button/Button'
 import Textbox from './components/Textbox/Textbox'
 import { serverEndpoint } from '../config.json'
-// appliances = {"tl-01": {"name":"Tubelight", "image": "/", "pin":1, "lastStatus":"ON", "lastStatusTime":"UTC Time","type": "light"}}
 
 function Room() {
-    let [user, setUser] = useState({ authenticated: true, token: null })
-    let [appliances, setAppliances] = useState(null)
-    let [email, setEmail] = useState(null)
-    let [password, setPassword] = useState(null)
+    let [user, setUser] = useState({ authenticated: false, token: null })
+    let [appliances, setAppliances] = useState([])
+    let [email, setEmail] = useState('')
+    let [password, setPassword] = useState('')
     let [lastAction, setLastAction] = useState('ON')
 
     useEffect(() => {
         fetchAppliances()
     }, [])
     function fetchAppliances() {
-        fetch(serverEndpoint + '/appliances')
+        fetch(serverEndpoint + '/appliance')
             .then(response => response.json())
-            .then(data => setAppliances(data))
+            .then(data => {
+                let res = data.data.map(element => { let el = element; let dt = new Date(el.lastStatusTime); dt.toUTCString(); el.lastStatusTime = dt.toUTCString(); return el })
+                setAppliances(res)
+            })
     }
     function handleChange(event) {
         switch (event.target.id) {
@@ -36,12 +38,14 @@ function Room() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email: email, password: password })
+            body: JSON.stringify({ "email": email, "password": password })
         })
             .then(response => response.json())
             .then(data => {
                 if (data.authenticated) {
                     setUser({ authenticated: true, token: data.token })
+                    setEmail("")
+                    setPassword("")
                 } else {
                     setUser({ authenticated: false, token: null })
                 }
@@ -50,9 +54,9 @@ function Room() {
 
     function applianceToggle(event, id) {
         let action = ''
-        if (appliances[id].lastAction === 'ON') {
+        if (appliances[id].lastStatus === 'ON') {
             action = 'OFF'
-        } else if (appliances[id].lastAction === 'OFF') {
+        } else if (appliances[id].lastStatus === 'OFF') {
             action = 'ON'
         }
         fetch(serverEndpoint + '/applianceToggle', {
@@ -68,7 +72,6 @@ function Room() {
                     fetchAppliances()
                     setLastAction(action)
                 }
-
             })
     }
     return (
@@ -79,66 +82,16 @@ function Room() {
             {user.authenticated ?
                 (
                     <div className="appliances-card">
-                        <div className="appliance-card" onClick={(event) => { applianceToggle(event, 'tl-01') }}>
+                        {appliances.map((appliance, index) => <div className="appliance-card" onClick={(event) => { applianceToggle(event, index) }}>
                             <div className="appliance-image">
-                                <img src={light} alt={""} />
+                                <img src={appliance.image === '/' ? light : appliance.image} alt={""} />
                             </div>
                             <div className="appliance-meta">
-                                <p>Tubelight</p>
-                                <p>ON</p>
-                                <p>Last updated on 24:00:00</p>
+                                <p>{appliance.name}</p>
+                                <p>{appliance.lastStatus}</p>
+                                <p>{appliance.lastStatusTime}</p>
                             </div>
-                        </div>
-                        <div className="appliance-card">
-                            <div className="appliance-image">
-                                <img src={light} alt={""} />
-                            </div>
-                            <div className="appliance-meta">
-                                <p>Tubelight</p>
-                                <p>ON</p>
-                                <p>Last updated on 24:00:00</p>
-                            </div>
-                        </div>
-                        <div className="appliance-card">
-                            <div className="appliance-image">
-                                <img src={light} alt={""} />
-                            </div>
-                            <div className="appliance-meta">
-                                <p>Tubelight</p>
-                                <p>ON</p>
-                                <p>Last updated on 24:00:00</p>
-                            </div>
-                        </div>
-                        <div className="appliance-card">
-                            <div className="appliance-image">
-                                <img src={light} alt={""} />
-                            </div>
-                            <div className="appliance-meta">
-                                <p>Tubelight</p>
-                                <p>ON</p>
-                                <p>Last updated on 24:00:00</p>
-                            </div>
-                        </div>
-                        <div className="appliance-card">
-                            <div className="appliance-image">
-                                <img src={light} alt={""} />
-                            </div>
-                            <div className="appliance-meta">
-                                <p>Tubelight</p>
-                                <p>ON</p>
-                                <p>Last updated on 24:00:00</p>
-                            </div>
-                        </div>
-                        <div className="appliance-card">
-                            <div className="appliance-image">
-                                <img src={light} alt={""} />
-                            </div>
-                            <div className="appliance-meta">
-                                <p>Tubelight</p>
-                                <p>ON</p>
-                                <p>Last updated on 24:00:00</p>
-                            </div>
-                        </div>
+                        </div>)}
                     </div>
                 ) : (
                     <div>
