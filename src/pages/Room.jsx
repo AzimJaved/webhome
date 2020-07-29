@@ -44,6 +44,19 @@ function Room() {
             .then(data => {
                 if (data.authenticated) {
                     setUser({ authenticated: true, token: data.token })
+                    fetch(serverEndpoint + '/pingAppliances', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ "token": data.token })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.type === 'success') {
+                                fetchAppliances()
+                            }
+                        })
                     setEmail("")
                     setPassword("")
                 } else {
