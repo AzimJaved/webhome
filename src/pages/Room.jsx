@@ -6,7 +6,7 @@ import Textbox from './components/Textbox/Textbox'
 import { serverEndpoint } from '../config.json'
 
 function Room() {
-    let [user, setUser] = useState({ authenticated: true, token: '22b17e91c013bfbdc0a67887bcba10c5' })
+    let [user, setUser] = useState({ authenticated: false, token: null })
     let [appliances, setAppliances] = useState([])
     let [email, setEmail] = useState('')
     let [password, setPassword] = useState('')
