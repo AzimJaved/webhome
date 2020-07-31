@@ -6,7 +6,7 @@ import Textbox from './components/Textbox/Textbox'
 import { serverEndpoint } from '../config.json'
 
 function Room() {
-    let [user, setUser] = useState({ authenticated: false, token: null })
+    let [user, setUser] = useState({ authenticated: true, token: '22b17e91c013bfbdc0a67887bcba10c5' })
     let [appliances, setAppliances] = useState([])
     let [email, setEmail] = useState('')
     let [password, setPassword] = useState('')
@@ -31,6 +31,22 @@ function Room() {
                 break;
             default: return;
         }
+    }
+    function handlePing() {
+        fetch(serverEndpoint + '/pingAppliances', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ "token": user.token })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.type === 'success') {
+                    fetchAppliances()
+                }
+            })
+
     }
     function handleSubmit(event) {
         fetch(serverEndpoint + '/login', {
@@ -92,6 +108,9 @@ function Room() {
             <div className="heading" style={lastAction === 'ON' ? { color: '#000000' } : { color: "#ffffff" }}>
                 <h1>Room</h1>
             </div>
+            <div>
+                <Button id={"ping"} onClick={(event => { handlePing(event) })}>Update Status</Button>
+            </div>
             {user.authenticated ?
                 (
                     <div className="appliances-card">
@@ -117,9 +136,10 @@ function Room() {
                             <Button id={'submit'} onClick={(event) => { handleSubmit(event) }}>Login</Button>
                         </div>
                     </div>
-                )}
+                )
+            }
 
-        </article>
+        </article >
     )
 }
 
