@@ -19,7 +19,7 @@ function Room() {
         fetch(serverEndpoint + '/appliance')
             .then(response => response.json())
             .then(data => {
-                let res = data.data.map(element => { let el = element; let dt = new Date(el.lastStatusTime); dt.toUTCString(); el.lastStatusTime = dt.toUTCString(); return el })
+                let res = data.data.map(element => { let el = element; let dt = new Date(el.lastStatusTime); el.lastStatusTime = dt.toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}); return el })
                 setAppliances(res)
             })
     }
@@ -114,7 +114,7 @@ function Room() {
             {user.authenticated ?
                 (
                     <div className="appliances-card">
-                        {appliances.map((appliance, index) => <div className="appliance-card" onClick={(event) => { applianceToggle(event, index) }}>
+                        {appliances.map((appliance, index) => <div className="appliance-card" style={appliance.lastStatus==='ON'? {backgroundColor: '#fffda4'}: {backgroundColor: '#7a7a7a'}}onClick={(event) => { applianceToggle(event, index) }}>
                             <div className="appliance-image">
                                 <img src={appliance.image === '/' ? light : appliance.image} alt={""} />
                             </div>
