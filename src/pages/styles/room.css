@@ -38,6 +38,7 @@
     background-color: #fffda4;
     border: 5px solid black;
     border-radius: 2em;
+    transition-duration: 0.5s;
 }
 
 .room .appliance-card:hover, .room .appliance-card:focus, .room .appliance-card:active{

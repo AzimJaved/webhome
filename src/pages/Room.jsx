@@ -6,7 +6,7 @@ import Textbox from './components/Textbox/Textbox'
 import { serverEndpoint } from '../config.json'
 
 function Room() {
-    let [user, setUser] = useState({ authenticated: false, token: null })
+    let [user, setUser] = useState({ authenticated: true, token: null })
     let [appliances, setAppliances] = useState([])
     let [email, setEmail] = useState('')
     let [password, setPassword] = useState('')
@@ -21,6 +21,7 @@ function Room() {
             .then(data => {
                 let res = data.data.map(element => { let el = element; let dt = new Date(el.lastStatusTime); el.lastStatusTime = dt.toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}); return el })
                 setAppliances(res)
+                
             })
     }
     function handleChange(event) {
